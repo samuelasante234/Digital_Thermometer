@@ -1,0 +1,16 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**", "~/Documents/msp430-gcc/include"
+            ],
+            "defines": ["__MSP430G2553__"],
+            "compilerPath": "~/Documents/msp430-gcc/bin/msp430-elf-gcc",
+            "cStandard": "c17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}
