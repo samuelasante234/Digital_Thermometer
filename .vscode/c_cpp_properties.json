@@ -3,7 +3,8 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**", "~/Documents/msp430-gcc/include"
+                "${workspaceFolder}/**", "~/Documents/msp430-gcc/include",
+                "${workspaceFolder}/components/reg_bit_mapping/**" 
             ],
             "defines": ["__MSP430G2553__"],
             "compilerPath": "~/Documents/msp430-gcc/bin/msp430-elf-gcc",
