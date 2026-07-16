@@ -1,3 +1,5 @@
+#ifndef REG_BIT_MAPPING_H
+#define REG_BIT_MAPPING_H
 #include <stdint.h>
 #include <stdio.h>
 
@@ -36,3 +38,5 @@ typedef union {
         };
         unsigned char UCA0BR1_reg;
     } UCA0BR1_register;
+
+#endif
