@@ -3,11 +3,13 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <inttypes.h>
 
 void temp_sensor_init();
 void enable_enc();
 void disable_enc();
 void calculate_temp_readings(uint32_t* final_temp);
+void convert_temp_reading_to_string(uint32_t final_temp, char* temp_string);
 
 volatile uint16_t temp_readings[5];
 
@@ -15,14 +17,14 @@ volatile bool must_enable_enc=true;
 
 void temp_sensor_init() {
     ADC10CTL0 |= 
-    SREF0 | ADC10SHT1 | ADC10SR |     //SREF=011B, 16 ADC CLOCK CYCLES, 50ksps
-    REFON | ADC10ON | ADC10IE; //reference on(1.5v), enable ADC10 and interrupts
+    SREF0 | ADC10SHT1 | ADC10SR |               //SREF=011B, 16 ADC CLOCK CYCLES, 50ksps
+    REFON | ADC10ON | ADC10IE;                  //reference on(1.5v), enable ADC10 and interrupts
     ADC10CTL1 |= 
-    INCH_5 | SHS_0 | ADC10DIV_7 |     //Channel A5, ADC10SC as trigger, divisor of 8
-    ADC10SSEL1 | CONSEQ1;             // use MCLK, repeat single-channel mode
-    ADC10AE0 |= BIT5;                 //enable analog input A5
-    ADC10DTC0 &= 0;                   //one-block transfer, non-continuous
-    ADC10DTC1 = BIT2 | BIT0;          //5 DTC transfers per temperature reading
+    INCH_5 | SHS_0 | ADC10DIV_7 |               //Channel A5, ADC10SC as trigger, divisor of 8
+    ADC10SSEL1 | CONSEQ1;                       // use MCLK, repeat single-channel mode
+    ADC10AE0 |= BIT5;                           //enable analog input A5
+    ADC10DTC0 &= 0;                             //one-block transfer, non-continuous
+    ADC10DTC1 = BIT2 | BIT0;                    //5 DTC transfers per temperature reading
     ADC10SA = (uint16_t )temp_readings;         //address of temperature reading buffer
 }
 void enable_enc() {
@@ -38,4 +40,9 @@ void calculate_temp_readings(uint32_t* final_temp) {
     }
     average = (uint16_t)(average/5);
     *final_temp = ((uint32_t)average * 15000) /(1023);        //two decimal digits precision
+}
+void convert_temp_reading_to_string(uint32_t final_temp, char* temp_string) {
+    uint8_t integer_part = (uint8_t)(final_temp/100);
+    uint8_t fractional_part = (uint8_t )(final_temp - (uint16_t)(integer_part)*100);
+    snprintf(temp_string,26, "Temperature(in C): %" PRIu8 ".%02" PRIu8,integer_part,fractional_part);
 }
