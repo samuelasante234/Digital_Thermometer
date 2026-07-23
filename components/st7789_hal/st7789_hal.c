@@ -5,7 +5,7 @@
 #include <string.h>
 #include "font_array.h"
 
-#define DELAY_IN_MS(x) __delay_cycles(16000 * (x))
+
 
 #define RESET_FLAG 1                               //0 means reset->off, 1 means reset->ON
 
